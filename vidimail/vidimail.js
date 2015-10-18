@@ -11,6 +11,7 @@ Router.route('/' ,{
 
 if (Meteor.isClient) {
 
+
   // This code only runs on the client
   Template.body.helpers({
     tasks: function () {
@@ -40,7 +41,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.task.events({
+  Template.vidimail.events({
     "click .toggle-checked": function () {
       // Set the checked property to the opposite of its current value
       Tasks.update(this._id, {
@@ -56,6 +57,8 @@ if (Meteor.isClient) {
 
 
 if(Meteor.isServer) {
+
+   
 // Configure the Twilio client
   var ACCOUNT_SID = "AC05aea60b815f99cad88996a8b63d87ae";// SID tied to your Twilio account
   var AUTH_TOKEN = "5efadb1e45c24fc3e13302c0bfa60d4e";
