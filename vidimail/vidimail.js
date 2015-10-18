@@ -1,4 +1,12 @@
 Tasks = new Mongo.Collection("tasks");
+Router.route('/register');
+Router.route('/vidimail',{
+  template: 'vidimail'
+});
+
+Router.route('/' ,{
+    template: 'home'
+});
 
 
 if (Meteor.isClient) {
