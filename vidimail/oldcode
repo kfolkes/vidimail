@@ -1,0 +1,83 @@
+<head>
+  <title>Vidimail</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Todo List</h1>
+      <form class="new-task">
+        <input type="text" name="text" placeholder="Type to add new tasks" />
+      </form>
+
+    </header>
+ 
+    <ul>
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
+</body>
+ 
+<template name="task">
+ 
+    <li class="{{#if checked}}checked{{/if}}">
+    <button class="delete">&times;</button>
+ 
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+ 
+    <span class="text">{{text}}</span>
+  </li>
+
+Tasks = new Mongo.Collection("tasks");
+
+
+if (Meteor.isClient) {
+
+  // This code only runs on the client
+  Template.body.helpers({
+    tasks: function () {
+      // Show newest tasks at the top
+      return Tasks.find({}, {sort: {createdAt: -1}});
+    }
+  });
+
+  Template.body.events({
+    "submit .new-task": function (event) {
+      // Prevent default browser form submit
+      event.preventDefault();
+ 
+      // Get value from form element
+      var text = event.target.text.value;
+ 
+      // Insert a task into the collection
+      Tasks.insert({
+        text: text,
+        createdAt: new Date() // current time
+      });
+ 
+      // Clear form
+      event.target.text.value = "";
+      
+
+    }
+  });
+
+  Template.task.events({
+    "click .toggle-checked": function () {
+      // Set the checked property to the opposite of its current value
+      Tasks.update(this._id, {
+        $set: {checked: ! this.checked}
+      });
+    },
+    "click .delete": function () {
+      Tasks.remove(this._id);
+    }
+  });
+
+
+
+}
+
+

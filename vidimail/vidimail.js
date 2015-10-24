@@ -14,6 +14,7 @@ Router.route('/' ,{
     template: 'home'
 });
 
+
 Images = new FS.Collection("images", {
   stores: [new FS.Store.FileSystem("images", {path: "~/uploads"})]
 });
@@ -85,13 +86,37 @@ Template.myForm.events({
 
 
 if(Meteor.isServer) {
-
+/*
 // Configure the Twilio client
   var ACCOUNT_SID = "AC05aea60b815f99cad88996a8b63d87ae";// SID tied to your Twilio account
   var AUTH_TOKEN = "5efadb1e45c24fc3e13302c0bfa60d4e";
   twilio = Twilio(ACCOUNT_SID, AUTH_TOKEN);
+  
 
- /* twilio.sendSms({
+
+  var twilio_res =new Twilio.TwimlResponse();
+
+ twilio_res.say('Welcome to Twilio!')
+    .pause({ length:3 })
+    .say('Please let us know if we can help during your development.', {
+        voice:'woman',
+        language:'en-gb'
+    })
+    .play('http://www.example.com/some_sound.mp3')
+    .gather({
+        action:'http://www.example.com/callFinished.php',
+        finishOnKey:'*'
+    }, function() {
+        this.say('Press 1 for customer service')
+            .say('Press 2 for British customer service', { language:'en-gb' })
+            
+    });*/
+   
+//console.log(twilio_res.toString());
+
+ /*
+
+  twilio.sendSms({
     to:'+447402084758', // Any number Twilio can deliver to
     from: '+12057373887', // A number you bought from Twilio and can use for outbound communication
     body: 'krystal mother.' // body of the SMS message
@@ -107,8 +132,8 @@ if(Meteor.isServer) {
     }
 });
 
-*/
-/*
+
+
 twilio.messages.create({
     body: "Jenny please?! I love you <3",
     to: "+447402084758",
@@ -123,18 +148,27 @@ twilio.messages.create({
     process.stdout.write( JSON.stringify(err, null, 2) );
   }
     
-});
+});*/
+
 //testing call function 
-  //twilio = Twilio(ACCOUNT_SID, AUTH_TOKEN);
+/*
   twilio.makeCall({
     to:'+447402084758', // Any number Twilio can call
     from: '+12057373887', // A number you bought from Twilio and can use for outbound communication
-   url: 'http://www.example.com/twiml.xml' // A URL that produces an XML document (TwiML) which contains instructions for the call
+    url: 'https://demo.twilio.com/welcome/sms/reply/' // A URL that produces an XML document (TwiML) which contains instructions for the call
   }, function(err, responseData) {
     //executed when the call has been initiated.
-    console.log(responseData.from); // outputs "+14506667788"
+    
+      if (!err) {
+    console.log("yayy");
+    console.log(responseData.from);
+  }
+  else{
+      
+      process.stdout.write( JSON.stringify(err, null, 2) );
+  } // outputs "+14506667788"
   });
-*/
+   */
 }
 
 
