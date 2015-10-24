@@ -27,3 +27,7 @@ iron:router
 yong:meteor-videojs
 cfs:gridfs
 mrt:require
+cfs:filesystem
+cfs:s3
+cfs:dropbox
+cfs:standard-packages

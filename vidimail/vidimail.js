@@ -14,8 +14,29 @@ Router.route('/' ,{
     template: 'home'
 });
 
+Images = new FS.Collection("images", {
+  stores: [new FS.Store.FileSystem("images", {path: "~/uploads"})]
+});
 
 if (Meteor.isClient) {
+
+Images.allow({
+  'insert': function () {
+    // add custom authentication code here
+    return true;
+  }
+});
+
+Template.myForm.events({
+  'change .myFileInput': function(event, template) {
+    FS.Utility.eachFile(event, function(file) {
+      Images.insert(file, function (err, fileObj) {
+        // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
+      });
+    });
+  }
+});
+
 
 
   // This code only runs on the client
@@ -87,12 +108,12 @@ if(Meteor.isServer) {
 });
 
 */
-
+/*
 twilio.messages.create({
     body: "Jenny please?! I love you <3",
     to: "+447402084758",
     from: "+12057373887",
-    media: "http://women.eecs.ucf.edu/wp-content/uploads/1456778_10201789792539380_1306409560_n-300x300.jpg"
+    mediaUrl: "http://women.eecs.ucf.edu/wp-content/uploads/1456778_10201789792539380_1306409560_n-300x300.jpg"
 }, function(err, message) {
   if (!err) {
     console.log("no error girl")
@@ -113,7 +134,7 @@ twilio.messages.create({
     //executed when the call has been initiated.
     console.log(responseData.from); // outputs "+14506667788"
   });
-
+*/
 }
 
 
