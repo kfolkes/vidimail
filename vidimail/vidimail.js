@@ -1,4 +1,10 @@
 Tasks = new Mongo.Collection("tasks");
+myVideos = new Mongo.Collection("my_video");
+receivedVid = new Mongo.Collection("received_vid");
+receivedMsg  = new Mongo.Collection("received_msg");
+receivedVoice = new Mongo.Collection("received_voice");
+
+
 Router.route('/register');
 Router.route('/vidimail',{
   template: 'vidimail'
@@ -56,14 +62,15 @@ if (Meteor.isClient) {
 }
 
 
+
 if(Meteor.isServer) {
 
-   
 // Configure the Twilio client
   var ACCOUNT_SID = "AC05aea60b815f99cad88996a8b63d87ae";// SID tied to your Twilio account
   var AUTH_TOKEN = "5efadb1e45c24fc3e13302c0bfa60d4e";
   twilio = Twilio(ACCOUNT_SID, AUTH_TOKEN);
-  twilio.sendSms({
+
+ /* twilio.sendSms({
     to:'+447402084758', // Any number Twilio can deliver to
     from: '+12057373887', // A number you bought from Twilio and can use for outbound communication
     body: 'krystal mother.' // body of the SMS message
@@ -78,6 +85,34 @@ if(Meteor.isServer) {
       console.log("there was a twilio error: " + JSON.stringify(err, null, 2) );
     }
 });
+
+*/
+
+twilio.messages.create({
+    body: "Jenny please?! I love you <3",
+    to: "+447402084758",
+    from: "+12057373887",
+    media: "http://women.eecs.ucf.edu/wp-content/uploads/1456778_10201789792539380_1306409560_n-300x300.jpg"
+}, function(err, message) {
+  if (!err) {
+    console.log("no error girl")
+  }
+  else{
+
+    process.stdout.write( JSON.stringify(err, null, 2) );
+  }
+    
+});
+//testing call function 
+  //twilio = Twilio(ACCOUNT_SID, AUTH_TOKEN);
+  twilio.makeCall({
+    to:'+447402084758', // Any number Twilio can call
+    from: '+12057373887', // A number you bought from Twilio and can use for outbound communication
+   url: 'http://www.example.com/twiml.xml' // A URL that produces an XML document (TwiML) which contains instructions for the call
+  }, function(err, responseData) {
+    //executed when the call has been initiated.
+    console.log(responseData.from); // outputs "+14506667788"
+  });
 
 }
 

@@ -24,3 +24,6 @@ reload
 accolver:twilio-meteor
 asveloper:ui-loader
 iron:router
+yong:meteor-videojs
+cfs:gridfs
+mrt:require
