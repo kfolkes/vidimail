@@ -15,29 +15,27 @@ Router.route('/' ,{
 });
 
 
-Images = new FS.Collection("images", {
-  stores: [new FS.Store.FileSystem("images", {path: "~/uploads"})]
+Router.route('/public/krystal.xml', {
+
+where: 'server',
+template: 'blank',
+action: function() {
+
+var xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+xmlData += "<Response>";
+xmlData += "<Say voice=\"woman\" language=\"en\">Hello!</Say>";
+xmlData += "</Response>";
+console.log(xmlData);
+this.response.writeHead(200, {'Content-Type': 'application/xml'});
+this.response.end(xmlData);
+
+}
+
 });
 
-if (Meteor.isClient) {
 
-Images.allow({
-  'insert': function () {
-    // add custom authentication code here
-    return true;
-  }
-});
 
-Template.myForm.events({
-  'change .myFileInput': function(event, template) {
-    FS.Utility.eachFile(event, function(file) {
-      Images.insert(file, function (err, fileObj) {
-        // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
-      });
-    });
-  }
-});
-
+if(Meteor.isClient){
 
 
   // This code only runs on the client
@@ -69,7 +67,7 @@ Template.myForm.events({
     }
   });
 
-  Template.vidimail.events({
+  Template.body.events({
     "click .toggle-checked": function () {
       // Set the checked property to the opposite of its current value
       Tasks.update(this._id, {
@@ -83,36 +81,14 @@ Template.myForm.events({
 
 }
 
-
-
 if(Meteor.isServer) {
-/*
+
 // Configure the Twilio client
   var ACCOUNT_SID = "AC05aea60b815f99cad88996a8b63d87ae";// SID tied to your Twilio account
   var AUTH_TOKEN = "5efadb1e45c24fc3e13302c0bfa60d4e";
   twilio = Twilio(ACCOUNT_SID, AUTH_TOKEN);
   
 
-
-  var twilio_res =new Twilio.TwimlResponse();
-
- twilio_res.say('Welcome to Twilio!')
-    .pause({ length:3 })
-    .say('Please let us know if we can help during your development.', {
-        voice:'woman',
-        language:'en-gb'
-    })
-    .play('http://www.example.com/some_sound.mp3')
-    .gather({
-        action:'http://www.example.com/callFinished.php',
-        finishOnKey:'*'
-    }, function() {
-        this.say('Press 1 for customer service')
-            .say('Press 2 for British customer service', { language:'en-gb' })
-            
-    });*/
-   
-//console.log(twilio_res.toString());
 
  /*
 
@@ -151,15 +127,38 @@ twilio.messages.create({
 });*/
 
 //testing call function 
+
+/*twilio.on('incomingCall', function(call) {
+        //Use the Call object to generate TwiML
+        call.say("This is a test. Goodbye!");
+    });
+*/
 /*
-  twilio.makeCall({
+ twilio.makeCall("+447402084758", "+12057373887", function(err, call) {
+        if(err) throw err;
+        call.on('connected', function(status) {
+            //Called when the caller picks up
+            call.say('Welcome to Twilio!');
+            call.say('Please let us know if we can help during your development.', {
+                voice:'woman',
+                language:'en-gb'
+            });
+        });
+        call.on('ended', function(status, duration) {
+            //Called when the call ends
+        });
+    });
+ */
+ /*
+ twilio.makeCall({
     to:'+447402084758', // Any number Twilio can call
     from: '+12057373887', // A number you bought from Twilio and can use for outbound communication
-    url: 'https://demo.twilio.com/welcome/sms/reply/' // A URL that produces an XML document (TwiML) which contains instructions for the call
+    url: 'http://30393d47.ngrok.io/krystal.xml' // A URL that produces an XML document (TwiML) which contains instructions for the call
   }, function(err, responseData) {
     //executed when the call has been initiated.
     
       if (!err) {
+
     console.log("yayy");
     console.log(responseData.from);
   }

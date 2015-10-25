@@ -31,3 +31,4 @@ cfs:filesystem
 cfs:s3
 cfs:dropbox
 cfs:standard-packages
+glittershark:meteor-express
